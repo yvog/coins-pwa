@@ -59,7 +59,7 @@ npm run gen:assets
 
 # Technologies
 
-[TypeScript]('https://www.typescriptlang.org/'), [React]('https://reactjs.org/'), [SWR]('https://swr.vercel.app/'), [Next.js]('https://nextjs.org/'), [Mui5]('https://mui.com/'), [Material-React-Table](https://github.com/KevinVandy/material-react-table)
+[TypeScript](https://www.typescriptlang.org/), [React](https://reactjs.org/), [SWR](https://swr.vercel.app/), [Next.js](https://nextjs.org/), [Mui5](https://mui.com/), [Material-React-Table](https://github.com/KevinVandy/material-react-table)
 
 # Authorization
 
