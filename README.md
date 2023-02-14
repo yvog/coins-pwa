@@ -64,3 +64,25 @@ npm run gen:assets
 # Authorization
 
 Currently, authorization was built to support signed and encrypted cookies (seals) by [iron-session](https://github.com/vvo/iron-session).
+
+# Coin data
+The coin table expects an array containing JSON objects using the following structure:
+
+```typescript
+type Coin = {
+  image: `https://en.numista.com/catalogue/photos/${string}`
+  countryCode: EurozoneCountryCodes
+  year: number
+  mintmark?: CoinMintmarks
+  denomination: number
+  currency: 'EUR' | 'GBP' | 'NLG'
+  mintage?: number
+  cc?: boolean
+  description?: string
+  quality: CoinQualities
+  nifc?: boolean
+  swap?: boolean
+}
+```
+
+For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/20fb3b927afcdc5729cd0b0d0536bad7630996b6/src/components/coin-table/types.ts#L16-L29). 
