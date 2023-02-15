@@ -20,7 +20,7 @@ export const Logo = () => {
         }}
         gutterBottom={false}
       >
-        Euro Coins Collection
+        Coins
       </Typography>
     </Link>
   )

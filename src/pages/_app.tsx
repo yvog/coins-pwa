@@ -26,7 +26,7 @@ export default function App({
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
           />
-          <title>Euro Coins Collection - Yvo Geldhof</title>
+          <title>Coins DEMO</title>
         </Head>
         <ThemeProvider theme={theme}>
           <CssBaseline />
