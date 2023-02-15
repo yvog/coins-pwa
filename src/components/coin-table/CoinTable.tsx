@@ -13,7 +13,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { AppImage } from '../app-image/AppImage'
 import { tableConfig } from './tableConfig'
 import { defaultMuiTableHeadCellSxProps, tableStylingProps } from './tableStylingProps'
-import { Coin, coinMintmarks, coinQualities } from './types'
+import { Coin, coinMintmarks, coinQualities, exonumiaTypes } from './types'
 
 type ColumnSize = Breakpoint
 
@@ -162,8 +162,12 @@ export const CoinTable = (): JSX.Element => {
         header: 'Currency',
         ...columnSizeProps('sm'),
         filterVariant: 'multi-select',
-        filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)'],
+        filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'Exonumia'],
         accessorFn: (row: Coin) => {
+          if (row.currency == 'Exonumia') {
+            return row.currency
+          }
+
           const sign = new Intl.NumberFormat('nl-NL', {
             style: 'currency',
             currency: row.currency,
@@ -191,7 +195,14 @@ export const CoinTable = (): JSX.Element => {
         header: 'Denomination',
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => {
-          const currencySuffix: Record<Coin['currency'], [string, string]> = {
+          if (row.currency == 'Exonumia') {
+            return ''
+          }
+
+          const currencySuffix: Record<
+            Exclude<Coin['currency'], 'Exonumia'>,
+            [string, string]
+          > = {
             EUR: ['cent', 'euro'],
             GBP: ['pence', 'pound'],
             NLG: ['cent', 'gulden'],
@@ -270,8 +281,15 @@ export const CoinTable = (): JSX.Element => {
         header: 'Swappable',
         filterVariant: 'multi-select',
         filterSelectOptions: ['Yes', 'No'],
-        ...columnSizeProps('sm'),
+        ...columnSizeProps('md'),
         accessorFn: (row: Coin) => `${row.swap ? 'Yes' : 'No'}`,
+      },
+      {
+        accessorKey: 'exonumiaType',
+        header: 'Exonumia Type',
+        filterVariant: 'multi-select',
+        filterSelectOptions: [...exonumiaTypes],
+        ...columnSizeProps('lg'),
       },
     ]
   }, [])

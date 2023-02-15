@@ -13,19 +13,22 @@ export const coinQualities = [
 
 export const coinMintmarks = ['A', 'D', 'G', 'J', 'F', 'S'] as const
 
+export const exonumiaTypes = ['Token'] as const
+
 export type Coin = {
   image: `https://en.numista.com/catalogue/photos/${string}`
   countryCode: EurozoneCountryCodes
   year: number
   mintmark?: CoinMintmarks
   denomination: number
-  currency: 'EUR' | 'GBP' | 'NLG'
+  currency: 'EUR' | 'GBP' | 'NLG' | 'Exonumia'
   mintage?: number
   cc?: boolean
   description?: string
   quality: CoinQualities
   nifc?: boolean
   swap?: boolean
+  exonumiaType?: ExonumiaTypes
 }
 
 type EurozoneCountryCodes =
@@ -57,3 +60,5 @@ type EurozoneCountryCodes =
 type CoinQualities = (typeof coinQualities)[number]
 
 type CoinMintmarks = (typeof coinMintmarks)[number]
+
+type ExonumiaTypes = (typeof exonumiaTypes)[number]
