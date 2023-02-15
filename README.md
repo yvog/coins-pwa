@@ -2,7 +2,7 @@
 
 Make your coin collection portable using this [Progressive Web App](https://web.dev/progressive-web-apps/) (PWA).
 
-Try it out: [https://coins-demo.yvogeldhof.nl](https://coins-demo.yvogeldhof.nl). Use password "`demo`".
+Try it out: [https://coins-demo.yvogeldhof.nl](https://coins-demo.yvogeldhof.nl). Use password `demo`.
 
 # Features:
 
