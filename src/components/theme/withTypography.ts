@@ -76,10 +76,10 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.5rem',
     fontWeight: 400,
-    lineHeight: 1.75,
+    lineHeight: 1.2,
     [theme.breakpoints.up('md')]: {
       fontSize: '1.6rem',
-      lineHeight: 1.75,
+      lineHeight: 1.5,
     },
   }
 
@@ -87,10 +87,10 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.4rem',
     fontWeight: 400,
-    lineHeight: 1.75,
+    lineHeight: 1.2,
     [theme.breakpoints.up('md')]: {
       fontSize: '1.5rem',
-      lineHeight: 1.75,
+      lineHeight: 1.5,
     },
   }
 

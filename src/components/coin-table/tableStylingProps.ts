@@ -84,10 +84,10 @@ export const tableStylingProps = ({
           mt: 1,
           '.MuiSelect-select': {
             '& > .MuiBox-root': {
-              lineHeight: 1,
+              ...theme.typography.body1,
+              overflow: 'hidden',
               paddingRight: theme.spacing(1),
               textOverflow: 'ellipsis',
-              overflow: 'hidden',
               whiteSpace: 'nowrap',
               flexWrap: 'nowrap',
             },

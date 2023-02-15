@@ -49,6 +49,14 @@ export const withComponentOverrides = (theme: Theme): Theme => {
           },
         },
       },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            paddingLeft: theme.spacing(2),
+            paddingRight: theme.spacing(2),
+          },
+        },
+      },
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
@@ -70,6 +78,10 @@ export const withComponentOverrides = (theme: Theme): Theme => {
       },
       MuiInputBase: {
         styleOverrides: {
+          input: {
+            ...theme.typography.body1,
+            padding: 0,
+          },
           root: {
             borderRadius: '4px !important',
             background: alpha('#E0E8F5', 0.08),
@@ -151,8 +163,6 @@ export const withComponentOverrides = (theme: Theme): Theme => {
 
               '& .MuiSelect-select': {
                 padding: theme.spacing(1),
-                // adding extra pixels to center the text again after hiding the bottom border
-                paddingTop: `calc(${theme.spacing(1)} + 2px) !important`,
 
                 '&.MuiInput-input': {
                   paddingRight: 0,
