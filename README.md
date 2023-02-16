@@ -1,4 +1,4 @@
-# [Coins](https://coins.yvogeldhof.nl) &middot; ![GitHub license](https://img.shields.io/badge/license-BSD3-green.svg) 
+# [Coins](https://coins-demo.yvogeldhof.nl) &middot; ![GitHub license](https://img.shields.io/badge/license-BSD3-green.svg)
 
 Make your coin collection portable using this [Progressive Web App](https://web.dev/progressive-web-apps/) (PWA).
 
@@ -23,6 +23,7 @@ Try it out: [https://coins-demo.yvogeldhof.nl](https://coins-demo.yvogeldhof.nl)
 1. Create a `.env.local` in the project root and set correct values based on `.env.local.example`.
 
 2. Run:
+
 ```
 npm i
 npm run dev
@@ -68,6 +69,7 @@ npm run gen:assets
 Currently, authorization was built to support signed and encrypted cookies (seals) by [iron-session](https://github.com/vvo/iron-session).
 
 # Coin data
+
 The coin table expects an array containing JSON objects using the following structure:
 
 ```typescript
@@ -87,4 +89,4 @@ type Coin = {
 }
 ```
 
-For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/20fb3b927afcdc5729cd0b0d0536bad7630996b6/src/components/coin-table/types.ts#L16-L29). 
+For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/20fb3b927afcdc5729cd0b0d0536bad7630996b6/src/components/coin-table/types.ts#L16-L29).
