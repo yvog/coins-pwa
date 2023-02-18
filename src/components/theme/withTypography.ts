@@ -76,10 +76,8 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.5rem',
     fontWeight: 400,
-    lineHeight: 1.2,
     [theme.breakpoints.up('md')]: {
       fontSize: '1.6rem',
-      lineHeight: 1.5,
     },
   }
 
@@ -87,10 +85,8 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.4rem',
     fontWeight: 400,
-    lineHeight: 1.2,
     [theme.breakpoints.up('md')]: {
       fontSize: '1.5rem',
-      lineHeight: 1.5,
     },
   }
 
@@ -98,22 +94,8 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.4rem',
     fontWeight: 400,
-    lineHeight: 1.5,
     [theme.breakpoints.up('md')]: {
       fontSize: '1.4rem',
-      lineHeight: 1.5,
-    },
-  }
-
-  theme.typography.overline = {
-    fontFamily,
-    fontSize: '1.8rem',
-    fontWeight: 600,
-    lineHeight: 2.5,
-    textTransform: 'none',
-    [theme.breakpoints.up('md')]: {
-      fontSize: '2.4rem',
-      lineHeight: 3.2,
     },
   }
 
@@ -121,7 +103,6 @@ export const withTypography = (theme: Theme): Theme => {
     fontFamily,
     fontSize: '1.6rem',
     fontWeight: 500,
-    lineHeight: 2,
     textTransform: 'none',
   }
 

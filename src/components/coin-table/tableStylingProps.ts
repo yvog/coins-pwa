@@ -34,6 +34,10 @@ export const defaultMuiTableHeadCellSxProps: SxProps<Theme> = {
 
     '& > .Mui-TableHeadCell-Content-Labels': {
       minHeight: '3.2rem',
+
+      '& > .Mui-TableHeadCell-Content-Wrapper': {
+        overflow: 'visible',
+      },
     },
   },
 }
@@ -118,10 +122,11 @@ export const tableStylingProps = ({
     sx: (theme: Theme) => ({
       visibility: showTableBody ? 'unset' : 'hidden',
 
-      // unsafe way to select the error message if no results are found
-      '& tr td[colspan="12"] > p': {
+      // "no results found" message
+      '& tr td[colspan="13"] > p': {
         position: 'fixed',
         color: theme.palette.text.primary,
+        fontStyle: 'normal',
       },
     }),
   },
