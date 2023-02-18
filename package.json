@@ -13,10 +13,11 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write \"src/**/*.{ts,js,json,scss,css}\"",
+    "gen:assets": "npm run gen:favicon && npm run gen:maskableicons && npm run gen:icons && npm run gen:splashscreens",
     "gen:favicon": "pwa-asset-generator ./icon.svg ./public/icons --o false -f --icon-only --type png --path-override",
+    "gen:maskableicons": "pwa-asset-generator ./icon.svg ./public/maskable-icons -b \"#13294B\" --icon-only --path-override --type png --padding \"calc(50vh - 32%) calc(50vw - 52%)\"",
     "gen:icons": "pwa-asset-generator ./icon.svg ./public/icons -b \"#13294B\" --icon-only --path-override --type png --padding \"calc(50vh - 35%) calc(50vw - 55%)\"",
-    "gen:splashscreens": "pwa-asset-generator ./icon.svg ./public/splash-screens -b \"#13294B\" --portrait-only --splash-only --padding \"calc(50vh - 20%) calc(50vw - 40%)\" --path-override --type png",
-    "gen:assets": "npm run gen:favicon && npm run gen:icons && npm run gen:splashscreens"
+    "gen:splashscreens": "pwa-asset-generator ./icon.svg ./public/splash-screens -b \"#13294B\" --portrait-only --splash-only --padding \"calc(50vh - 20%) calc(50vw - 40%)\" --path-override --type png"
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",

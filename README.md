@@ -52,7 +52,9 @@ npm run prod:local
 
 This is automated using [pwa-asset-generator](https://github.com/elegantapp/pwa-asset-generator). The output will be meta tags to add. Please note: they are already added to this project.
 
-1. Delete `public/icons` and `public/splash-screens`
+There are multiple types of icons generated, to distinguish between maskable- and any purpose icons.
+
+1. Delete `public/icons`, `public/splash-screens`, and `public/maskable-icons`
 
 2. Run the following command from the project root to generate the assets:
 
