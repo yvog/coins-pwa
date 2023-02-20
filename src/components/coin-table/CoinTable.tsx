@@ -164,9 +164,8 @@ export const CoinTable = (): JSX.Element => {
         filterVariant: 'multi-select',
         filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'Exonumia'],
         accessorFn: (row: Coin) => {
-          if (row.currency == 'Exonumia') {
-            return row.currency
-          }
+          if (row.currency == 'Exonumia') return row.currency
+          if (row.currency == 'NLG') return `${row.currency} (ƒ)`
 
           const sign = new Intl.NumberFormat('nl-NL', {
             style: 'currency',
