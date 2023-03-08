@@ -81,14 +81,15 @@ type Coin = {
   year: number
   mintmark?: CoinMintmarks
   denomination: number
-  currency: 'EUR' | 'GBP' | 'NLG'
+  currency: 'EUR' | 'GBP' | 'NLG' | 'Exonumia'
   mintage?: number
   cc?: boolean
   description?: string
   quality: CoinQualities
   nifc?: boolean
   swap?: boolean
+  exonumiaType?: ExonumiaTypes
 }
 ```
 
-For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/20fb3b927afcdc5729cd0b0d0536bad7630996b6/src/components/coin-table/types.ts#L16-L29).
+For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/b73640f00a15bb44561cc70e255570264ba780ee/src/components/coin-table/types.ts#L18).
