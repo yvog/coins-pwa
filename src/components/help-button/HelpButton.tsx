@@ -1,16 +1,46 @@
+import { useAuthContext } from '@/contexts'
+import { useCoins } from '@/hooks'
 import QuestionMark from '@mui/icons-material/QuestionMark'
 import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Modal from '@mui/material/Modal'
-import { Theme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
+import { Theme } from '@mui/material/styles'
 import { useState } from 'react'
+import { Coin } from '../coin-table/types'
 import { containerPadding } from '../theme/withComponentOverrides'
+
+const getTotalValue = (coins: Coin[]): number => {
+  const totalValue = coins
+    .map((coin) => coin.denomination)
+    .reduce((partialSum, num) => partialSum + num, 0)
+
+  return Number(totalValue.toFixed(2))
+}
 
 export const HelpButton = () => {
   const [open, setOpen] = useState<boolean>(false)
   const handleClose = () => setOpen(false)
+  const { authRequired } = useAuthContext()
+
+  const {
+    data: coins,
+    isLoading,
+    isValidating,
+    error,
+  } = useCoins({
+    shouldFetch: !authRequired,
+  })
+
+  const showLoading: boolean = isLoading || isValidating || !!error
+
+  if (authRequired) {
+    return <></>
+  }
+
+  const totalValue = getTotalValue(coins ?? [])
 
   return (
     <>
@@ -53,6 +83,33 @@ export const HelpButton = () => {
               denominations per country. There are also some world coins in my
               collection, although I do not actively collect them.
             </Typography>
+
+            <Divider sx={{ my: 3 }} />
+
+            <Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
+                <Typography gutterBottom={false} fontWeight="bold" component="span">
+                  Total value:
+                </Typography>
+
+                {showLoading ? (
+                  <CircularProgress size={16} />
+                ) : (
+                  <Typography gutterBottom={false} component="span">
+                    {`€ ${totalValue}`}
+                  </Typography>
+                )}
+              </Box>
+              <Typography gutterBottom={false} component="span" variant="caption">
+                * only euro coins were counted
+              </Typography>
+            </Box>
 
             <Divider sx={{ my: 3 }} />
 

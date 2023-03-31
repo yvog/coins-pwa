@@ -47,11 +47,22 @@ const columnSizeProps = (size: ColumnSize) => {
   }
 }
 
+const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
+
+const getCountriesFromCoins = (coins: Coin[]) => {
+  return coins
+    .map((coin) => countryNames.of(coin.countryCode)) // get country codes & convert them to country name
+    .filter((value, index, self) => self.indexOf(value) === index) // remove duplicates
+    .sort((countryA, countryB) => (countryA ?? '').localeCompare(countryB ?? '')) // order alphabetically
+}
+
 export const CoinTable = (): JSX.Element => {
-  const [totalRowsInView, setTotalRowsInView] = useState<number>(0)
   const [showError, setShowError] = useState<boolean>(false)
   const { prevAuthRequired, authRequired } = useAuthContext()
 
+  const totalRowsInView = isBrowser
+    ? Math.ceil(window.innerHeight / tableConfig.rowHeight)
+    : 0
   const shouldFetch = totalRowsInView > 0 && authRequired === false
 
   const {
@@ -79,19 +90,10 @@ export const CoinTable = (): JSX.Element => {
     }
   }, [authRequired, prevAuthRequired, revalidateCoins])
 
-  useEffect(() => {
-    if (!isBrowser || totalRowsInView > 0) return
-
-    const _totalRowsInView = Math.ceil(window.innerHeight / tableConfig.rowHeight)
-
-    setTotalRowsInView(_totalRowsInView)
-  }, [totalRowsInView])
-
   const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired
   const showTableBody: boolean = showLoading || !!coins?.length || !!error
 
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
-    const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
     const numberFormatter = new Intl.NumberFormat('nl-NL')
 
     return [
@@ -129,6 +131,8 @@ export const CoinTable = (): JSX.Element => {
         accessorKey: 'countryCode',
         header: 'Country',
         ...columnSizeProps('md'),
+        filterVariant: 'multi-select',
+        filterSelectOptions: getCountriesFromCoins(coins ?? []),
         accessorFn: (row: Coin) => `${countryNames.of(row.countryCode)}`,
         Cell: ({ cell, row }) => {
           const countryName = (cell as any).getValue()
@@ -291,7 +295,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('lg'),
       },
     ]
-  }, [])
+  }, [coins])
 
   return (
     <>
