@@ -49,11 +49,13 @@ const columnSizeProps = (size: ColumnSize) => {
 
 const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
 
-const getCountriesFromCoins = (coins: Coin[]) => {
+const getCountriesFromCoins = (coins: Coin[]): string[] => {
   return coins
     .map((coin) => countryNames.of(coin.countryCode)) // get country codes & convert them to country name
     .filter((value, index, self) => self.indexOf(value) === index) // remove duplicates
-    .sort((countryA, countryB) => (countryA ?? '').localeCompare(countryB ?? '')) // order alphabetically
+    .sort(
+      (countryA, countryB) => (countryA ?? '').localeCompare(countryB ?? '') // order alphabetically
+    ) as unknown as string[]
 }
 
 export const CoinTable = (): JSX.Element => {

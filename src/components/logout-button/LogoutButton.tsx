@@ -21,7 +21,7 @@ export const LogoutButton = () => {
   }
 
   return (
-    <IconButton aria-label="logout" onClick={() => trigger()}>
+    <IconButton aria-label="logout" onClick={() => trigger(undefined)}>
       <Logout />
     </IconButton>
   )
