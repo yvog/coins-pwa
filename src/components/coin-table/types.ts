@@ -21,7 +21,7 @@ export type Coin = {
   year: number
   mintmark?: CoinMintmarks
   denomination: number
-  currency: 'EUR' | 'GBP' | 'NLG' | 'Exonumia'
+  currency: 'EUR' | 'GBP' | 'NLG' | 'UAH' | 'Exonumia'
   mintage?: number
   cc?: boolean
   description?: string

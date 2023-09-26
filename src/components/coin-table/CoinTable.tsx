@@ -7,7 +7,7 @@ import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import { Breakpoint, Theme } from '@mui/material/styles'
-import MaterialReactTable, { MRT_ColumnDef } from 'material-react-table'
+import { MRT_ColumnDef, MaterialReactTable } from 'material-react-table'
 import Head from 'next/head'
 import { useEffect, useMemo, useState } from 'react'
 import { AppImage } from '../app-image/AppImage'
@@ -98,6 +98,8 @@ export const CoinTable = (): JSX.Element => {
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
     const numberFormatter = new Intl.NumberFormat('nl-NL')
 
+    if (typeof authRequired == 'undefined' || authRequired) return [];
+
     return [
       {
         accessorKey: 'image',
@@ -107,9 +109,8 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('xs'),
         Cell: ({ cell, row }) => {
           const src = (cell as any).getValue()
-          const alt = `${row.original.countryCode} ${row.original.year} ${
-            row.original?.mintmark ?? ''
-          } ${row.original.denomination}`
+          const alt = `${row.original.countryCode} ${row.original.year} ${row.original?.mintmark ?? ''
+            } ${row.original.denomination}`
 
           return (
             <Box
@@ -148,9 +149,8 @@ export const CoinTable = (): JSX.Element => {
               }}
             >
               <AppImage
-                src={`${
-                  tableConfig.flagIconCssBaseURL
-                }/${row.original.countryCode.toLowerCase()}.svg`}
+                src={`${tableConfig.flagIconCssBaseURL
+                  }/${row.original.countryCode.toLowerCase()}.svg`}
                 width={24}
                 height={18}
                 aria-hidden="true"
@@ -172,6 +172,7 @@ export const CoinTable = (): JSX.Element => {
         accessorFn: (row: Coin) => {
           if (row.currency == 'Exonumia') return row.currency
           if (row.currency == 'NLG') return `${row.currency} (ƒ)`
+          if (row.currency == 'UAH') return `${row.currency} (₴)`
 
           const sign = new Intl.NumberFormat('nl-NL', {
             style: 'currency',
@@ -211,14 +212,12 @@ export const CoinTable = (): JSX.Element => {
             EUR: ['cent', 'euro'],
             GBP: ['pence', 'pound'],
             NLG: ['cent', 'gulden'],
+            UAH: ['kopiyok', 'hryvnia']
           }
 
-          const amount =
-            row.denomination < 1 ? row.denomination * 100 : row.denomination
+          const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination
 
-          return `${amount} ${
-            currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]
-          }`
+          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]}`
         },
       },
       {
@@ -297,7 +296,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('lg'),
       },
     ]
-  }, [coins])
+  }, [authRequired, coins])
 
   return (
     <>
