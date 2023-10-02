@@ -16,8 +16,6 @@ Try it out: [https://coins-demo.yvogeldhof.nl](https://coins-demo.yvogeldhof.nl)
 
 # Getting Started
 
-> Node >= v16.14.0 and < 17
-
 ## Development
 
 1. Create a `.env.local` in the project root and set correct values based on `.env.local.example`.
@@ -72,24 +70,4 @@ Currently, authorization was built to support signed and encrypted cookies (seal
 
 # Coin data
 
-The coin table expects an array containing JSON objects using the following structure:
-
-```typescript
-type Coin = {
-  image: `https://en.numista.com/catalogue/photos/${string}`
-  countryCode: EurozoneCountryCodes
-  year: number
-  mintmark?: CoinMintmarks
-  denomination: number
-  currency: 'EUR' | 'GBP' | 'NLG' | 'Exonumia'
-  mintage?: number
-  cc?: boolean
-  description?: string
-  quality: CoinQualities
-  nifc?: boolean
-  swap?: boolean
-  exonumiaType?: ExonumiaTypes
-}
-```
-
-For more information, see [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/b73640f00a15bb44561cc70e255570264ba780ee/src/components/coin-table/types.ts#L18).
+The coin table expects a JSON object. Please take a look at [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/b73640f00a15bb44561cc70e255570264ba780ee/src/components/coin-table/types.ts#L18).
