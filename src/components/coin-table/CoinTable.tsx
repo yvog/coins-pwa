@@ -168,7 +168,7 @@ export const CoinTable = (): JSX.Element => {
         header: 'Currency',
         ...columnSizeProps('sm'),
         filterVariant: 'multi-select',
-        filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'Exonumia'],
+        filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'UAH (₴)', 'Exonumia'],
         accessorFn: (row: Coin) => {
           if (row.currency == 'Exonumia') return row.currency
           if (row.currency == 'NLG') return `${row.currency} (ƒ)`
@@ -212,12 +212,14 @@ export const CoinTable = (): JSX.Element => {
             EUR: ['cent', 'euro'],
             GBP: ['pence', 'pound'],
             NLG: ['cent', 'gulden'],
-            UAH: ['kopiyok', 'hryvnia']
+            UAH: ['kopiyok', 'hryvnia'],
           }
 
-          const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination
+          const amount =
+            row.denomination < 1 ? row.denomination * 100 : row.denomination
 
-          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]}`
+          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]
+            }`
         },
       },
       {
@@ -296,7 +298,8 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('lg'),
       },
     ]
-  }, [authRequired, coins])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [coins])
 
   return (
     <>
