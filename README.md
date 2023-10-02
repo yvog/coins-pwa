@@ -70,4 +70,4 @@ Currently, authorization was built to support signed and encrypted cookies (seal
 
 # Coin data
 
-The coin table expects a JSON object. Please take a look at [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/b73640f00a15bb44561cc70e255570264ba780ee/src/components/coin-table/types.ts#L18).
+The coin table expects an array with JSON objects. Please take a look at [`src/components/coin-table/types.ts`](https://github.com/yvog/coins-pwa/blob/b73640f00a15bb44561cc70e255570264ba780ee/src/components/coin-table/types.ts#L18).
