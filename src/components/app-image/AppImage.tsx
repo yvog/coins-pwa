@@ -1,8 +1,8 @@
-import { mergeSx } from '@/util'
-import Box from '@mui/material/Box'
-import { SxProps, Theme } from '@mui/material/styles'
-import Image, { ImageProps } from 'next/image'
-import { useState } from 'react'
+import { mergeSx } from '@/util';
+import Box from '@mui/material/Box';
+import { SxProps, Theme } from '@mui/material/styles';
+import Image, { ImageProps } from 'next/image';
+import { useState } from 'react';
 
 type AppImageProps = Omit<ImageProps, 'onLoadingComplete'> & {
   sx?: SxProps<Theme>
@@ -18,7 +18,7 @@ export const AppImage = ({
   borderRadius,
   ...restImageProps
 }: AppImageProps): JSX.Element => {
-  const [isReady, setIsReady] = useState<boolean>(false)
+  const [isReady, setIsReady] = useState<boolean>(false);
 
   return (
     <Box
@@ -58,5 +58,5 @@ export const AppImage = ({
         onLoadingComplete={() => setIsReady(true)}
       />
     </Box>
-  )
-}
+  );
+};

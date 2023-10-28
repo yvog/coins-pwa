@@ -1,12 +1,12 @@
-import { useConnectivityContext } from '@/contexts'
-import Cloud from '@mui/icons-material/Cloud'
-import CloudOff from '@mui/icons-material/CloudOff'
-import Box from '@mui/material/Box'
-import Collapse from '@mui/material/Collapse'
-import { Theme } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-import { debounce } from '@mui/material/utils'
-import { useEffect, useState } from 'react'
+import { useConnectivityContext } from '@/contexts';
+import Cloud from '@mui/icons-material/Cloud';
+import CloudOff from '@mui/icons-material/CloudOff';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import { Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { debounce } from '@mui/material/utils';
+import { useEffect, useState } from 'react';
 
 type StatusMessage = {
   text: string
@@ -22,21 +22,21 @@ const statusMessages: Record<'online' | 'offline', StatusMessage> = {
     text: 'No network connection',
     icon: <CloudOff />,
   },
-}
+};
 
 export const ConnectivityBar = () => {
-  const [expanded, setExpanded] = useState<boolean>(false)
-  const { isOnline } = useConnectivityContext()
-  const statusMessage: StatusMessage = statusMessages[isOnline ? 'online' : 'offline']
+  const [expanded, setExpanded] = useState<boolean>(false);
+  const { isOnline } = useConnectivityContext();
+  const statusMessage: StatusMessage = statusMessages[isOnline ? 'online' : 'offline'];
 
   useEffect(() => {
     if (isOnline && expanded) {
-      debounce(() => setExpanded(false), 4000)?.()
+      debounce(() => setExpanded(false), 4000)?.();
     }
     if (!isOnline && !expanded) {
-      setExpanded(true)
+      setExpanded(true);
     }
-  }, [expanded, isOnline])
+  }, [expanded, isOnline]);
 
   return (
     <Collapse
@@ -67,5 +67,5 @@ export const ConnectivityBar = () => {
         </Typography>
       </Box>
     </Collapse>
-  )
-}
+  );
+};

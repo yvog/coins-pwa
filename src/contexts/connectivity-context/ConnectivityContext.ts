@@ -1,12 +1,12 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext } from 'react';
 
 export type ConnectivityContextValues = {
-  isOnline: boolean
-}
+  isOnline: boolean;
+};
 
 export const ConnectivityContext = createContext<ConnectivityContextValues>(
   {} as ConnectivityContextValues
-)
+);
 
 export const useConnectivityContext = (): ConnectivityContextValues =>
-  useContext(ConnectivityContext)
+  useContext(ConnectivityContext);

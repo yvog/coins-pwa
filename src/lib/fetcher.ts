@@ -1,24 +1,24 @@
 type FetchErrorData = {
-  status: number
-  message: string
-  body: unknown
-}
+  status: number;
+  message: string;
+  body: unknown;
+};
 
 export type FetchErrorObject = {
-  message: string
-  response: Response
-  data: FetchErrorData
-}
+  message: string;
+  response: Response;
+  data: FetchErrorData;
+};
 
 export async function fetcher<JSON = unknown>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<JSON> {
-  const response = await fetch(input, init)
-  const data = await response.json()
+  const response = await fetch(input, init);
+  const data = await response.json();
 
   if (response.ok) {
-    return data
+    return data;
   }
 
   throw new FetchError({
@@ -29,22 +29,22 @@ export async function fetcher<JSON = unknown>(
       message: response.statusText,
       body: data,
     },
-  })
+  });
 }
 
 export class FetchError extends Error {
-  public readonly response: Response
-  public readonly data: FetchErrorData
+  public readonly response: Response;
+  public readonly data: FetchErrorData;
 
   constructor({ message, response, data }: FetchErrorObject) {
-    super(message)
+    super(message);
 
     if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, FetchError)
+      Error.captureStackTrace(this, FetchError);
     }
 
-    this.name = 'FetchError'
-    this.response = response
-    this.data = data
+    this.name = 'FetchError';
+    this.response = response;
+    this.data = data;
   }
 }

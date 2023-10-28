@@ -1,29 +1,29 @@
-import { useAuthContext } from '@/contexts'
-import { useCoins } from '@/hooks'
-import QuestionMark from '@mui/icons-material/QuestionMark'
-import Box from '@mui/material/Box'
-import CircularProgress from '@mui/material/CircularProgress'
-import Divider from '@mui/material/Divider'
-import IconButton from '@mui/material/IconButton'
-import Modal from '@mui/material/Modal'
-import Typography from '@mui/material/Typography'
-import { Theme } from '@mui/material/styles'
-import { useState } from 'react'
-import { Coin } from '../coin-table/types'
-import { containerPadding } from '../theme/withComponentOverrides'
+import { useAuthContext } from '@/contexts';
+import { useCoins } from '@/hooks';
+import QuestionMark from '@mui/icons-material/QuestionMark';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Modal from '@mui/material/Modal';
+import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
+import { useState } from 'react';
+import { Coin } from '../coin-table/types';
+import { containerPadding } from '../theme/withComponentOverrides';
 
 const getTotalValue = (coins: Coin[]): number => {
   const totalValue = coins
     .map((coin) => coin.denomination)
-    .reduce((partialSum, num) => partialSum + num, 0)
+    .reduce((partialSum, num) => partialSum + num, 0);
 
-  return Number(totalValue.toFixed(2))
-}
+  return Number(totalValue.toFixed(2));
+};
 
 export const HelpButton = () => {
-  const [open, setOpen] = useState<boolean>(false)
-  const handleClose = () => setOpen(false)
-  const { authRequired } = useAuthContext()
+  const [open, setOpen] = useState<boolean>(false);
+  const handleClose = () => setOpen(false);
+  const { authRequired } = useAuthContext();
 
   const {
     data: coins,
@@ -32,15 +32,15 @@ export const HelpButton = () => {
     error,
   } = useCoins({
     shouldFetch: !authRequired,
-  })
+  });
 
-  const showLoading: boolean = isLoading || isValidating || !!error
+  const showLoading: boolean = isLoading || isValidating || !!error;
 
   if (authRequired) {
-    return <></>
+    return <></>;
   }
 
-  const totalValue = getTotalValue(coins ?? [])
+  const totalValue = getTotalValue(coins ?? []);
 
   return (
     <>
@@ -121,5 +121,5 @@ export const HelpButton = () => {
         </Box>
       </Modal>
     </>
-  )
-}
+  );
+};

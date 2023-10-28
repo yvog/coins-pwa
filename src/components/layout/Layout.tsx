@@ -1,5 +1,5 @@
-import Box from '@mui/material/Box'
-import { ConnectivityBar } from '../connectivity-bar/ConnectivityBar'
+import Box from '@mui/material/Box';
+import { ConnectivityBar } from '../connectivity-bar/ConnectivityBar';
 
 type Layout = {
   header: React.ReactNode
@@ -27,5 +27,5 @@ export const Layout = ({ header, children }: Layout): JSX.Element => {
         {children}
       </Box>
     </Box>
-  )
-}
+  );
+};

@@ -1,8 +1,8 @@
-import Box from '@mui/material/Box'
-import { lighten, Theme } from '@mui/material/styles'
-import { HelpButton } from '../help-button/HelpButton'
-import { Logo } from '../logo/Logo'
-import { LogoutButton } from '../logout-button/LogoutButton'
+import Box from '@mui/material/Box';
+import { lighten, Theme } from '@mui/material/styles';
+import { HelpButton } from '../help-button/HelpButton';
+import { Logo } from '../logo/Logo';
+import { LogoutButton } from '../logout-button/LogoutButton';
 
 export const Header = (): JSX.Element => {
   return (
@@ -29,5 +29,5 @@ export const Header = (): JSX.Element => {
         <LogoutButton />
       </Box>
     </Box>
-  )
-}
+  );
+};

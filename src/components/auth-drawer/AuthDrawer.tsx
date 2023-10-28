@@ -1,16 +1,16 @@
-import { useAuthContext } from '@/contexts'
-import Box from '@mui/material/Box'
-import Drawer, { DrawerProps } from '@mui/material/Drawer'
-import { Theme } from '@mui/material/styles'
-import Typography from '@mui/material/Typography'
-import { useState } from 'react'
-import { AuthForm } from '../auth-form/AuthForm'
+import { useAuthContext } from '@/contexts';
+import Box from '@mui/material/Box';
+import Drawer, { DrawerProps } from '@mui/material/Drawer';
+import { Theme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import { AuthForm } from '../auth-form/AuthForm';
 
 type AuthDrawerProps = Omit<DrawerProps, 'PaperProps' | 'onClose' | 'open'>
 
 export const AuthDrawer = (props: AuthDrawerProps) => {
-  const [opened, setOpened] = useState<boolean>()
-  const { authRequired, revalidateAuth } = useAuthContext()
+  const [opened, setOpened] = useState<boolean>();
+  const { authRequired, revalidateAuth } = useAuthContext();
 
   return (
     <Drawer
@@ -18,8 +18,8 @@ export const AuthDrawer = (props: AuthDrawerProps) => {
       open={opened == undefined || authRequired != undefined ? authRequired : opened}
       anchor="bottom"
       onClose={(event, reason) => {
-        if (reason == 'backdropClick' || reason == 'escapeKeyDown') return
-        setOpened(false)
+        if (reason == 'backdropClick' || reason == 'escapeKeyDown') return;
+        setOpened(false);
       }}
       PaperProps={{
         sx: (theme: Theme) => ({
@@ -51,5 +51,5 @@ export const AuthDrawer = (props: AuthDrawerProps) => {
         <AuthForm onSubmitSuccess={() => setOpened(false)} />
       </Box>
     </Drawer>
-  )
-}
+  );
+};

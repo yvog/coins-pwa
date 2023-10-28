@@ -1,11 +1,11 @@
-import { useAuthContext } from '@/contexts'
-import { fetcher, FetchError } from '@/lib/fetcher'
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import { Theme } from '@mui/material/styles'
-import TextField from '@mui/material/TextField'
-import { FormEvent, useRef, useState } from 'react'
+import { useAuthContext } from '@/contexts';
+import { fetcher, FetchError } from '@/lib/fetcher';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { Theme } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
+import { FormEvent, useRef, useState } from 'react';
 
 type Entity = {
   authorized: boolean
@@ -16,27 +16,27 @@ type AuthFormProps = {
 }
 
 export const AuthForm = ({ onSubmitSuccess }: AuthFormProps): JSX.Element => {
-  const formRef = useRef<HTMLFormElement | undefined>(undefined)
-  const [errorMsg, setErrorMsg] = useState<string | undefined>()
-  const { revalidateAuth } = useAuthContext()
+  const formRef = useRef<HTMLFormElement | undefined>(undefined);
+  const [errorMsg, setErrorMsg] = useState<string | undefined>();
+  const { revalidateAuth } = useAuthContext();
 
   const onSubmit = async (event: FormEvent) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const formData = new FormData(formRef.current)
-    const password = formData.get('password') as string
+    const formData = new FormData(formRef.current);
+    const password = formData.get('password') as string;
 
     if (!(password ?? '').trim()) {
-      setErrorMsg('Please fill in a password')
+      setErrorMsg('Please fill in a password');
 
-      return
+      return;
     }
 
     try {
-      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`
-      const params = new URLSearchParams(apiUrl)
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/auth`;
+      const params = new URLSearchParams(apiUrl);
 
-      params.set('password', password)
+      params.set('password', password);
 
       const response: Entity = await fetcher(apiUrl, {
         method: 'POST',
@@ -45,23 +45,23 @@ export const AuthForm = ({ onSubmitSuccess }: AuthFormProps): JSX.Element => {
         },
         credentials: 'include',
         body: params,
-      })
+      });
 
       if (response.authorized) {
-        setErrorMsg(undefined)
-        revalidateAuth()
-        onSubmitSuccess?.()
+        setErrorMsg(undefined);
+        revalidateAuth();
+        onSubmitSuccess?.();
       }
     } catch (error) {
       if (error instanceof FetchError) {
-        console.error(error)
-        setErrorMsg('Invalid password provided')
+        console.error(error);
+        setErrorMsg('Invalid password provided');
       } else {
-        console.error('An unexpected error happened:', error)
-        setErrorMsg('Unexpected error occured')
+        console.error('An unexpected error happened:', error);
+        setErrorMsg('Unexpected error occured');
       }
     }
-  }
+  };
 
   return (
     <>
@@ -115,5 +115,5 @@ export const AuthForm = ({ onSubmitSuccess }: AuthFormProps): JSX.Element => {
         </Alert>
       </Box>
     </>
-  )
-}
+  );
+};

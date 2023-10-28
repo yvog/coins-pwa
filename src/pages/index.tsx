@@ -1,4 +1,4 @@
-import { AuthDrawer, CoinTable, Header, Layout } from '@/components'
+import { AuthDrawer, CoinTable, Header, Layout } from '@/components';
 
 export default function Home() {
   return (
@@ -6,5 +6,5 @@ export default function Home() {
       <CoinTable />
       <AuthDrawer />
     </Layout>
-  )
+  );
 }

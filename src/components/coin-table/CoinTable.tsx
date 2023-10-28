@@ -1,38 +1,38 @@
-import { useAuthContext } from '@/contexts'
-import { useCoins } from '@/hooks'
-import { FetchErrorObject } from '@/lib/fetcher'
-import { clamp, isBrowser } from '@/util'
-import Star from '@mui/icons-material/Star'
-import Alert from '@mui/material/Alert'
-import Box from '@mui/material/Box'
-import Snackbar from '@mui/material/Snackbar'
-import { Breakpoint, Theme } from '@mui/material/styles'
-import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
-import Head from 'next/head'
-import { useEffect, useMemo, useState } from 'react'
-import { AppImage } from '../app-image/AppImage'
-import { tableConfig } from './tableConfig'
-import { defaultMuiTableHeadCellSxProps, tableStylingProps } from './tableStylingProps'
-import { Coin, coinMintmarks, coinQualities, exonumiaTypes } from './types'
+import { useAuthContext } from '@/contexts';
+import { useCoins } from '@/hooks';
+import { FetchErrorObject } from '@/lib/fetcher';
+import { clamp, isBrowser } from '@/util';
+import Star from '@mui/icons-material/Star';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import Snackbar from '@mui/material/Snackbar';
+import { Breakpoint, Theme } from '@mui/material/styles';
+import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
+import Head from 'next/head';
+import { useEffect, useMemo, useState } from 'react';
+import { AppImage } from '../app-image/AppImage';
+import { tableConfig } from './tableConfig';
+import { defaultMuiTableHeadCellSxProps, tableStylingProps } from './tableStylingProps';
+import { Coin, coinMintmarks, coinQualities, exonumiaTypes } from './types';
 
 type ColumnSize = Breakpoint
 
 const columnSize = (size: ColumnSize): number => {
-  const baseUnit = 8
+  const baseUnit = 8;
   const sizes: Record<Breakpoint, number> = {
     xs: 16 * baseUnit,
     sm: 18 * baseUnit,
     md: 22 * baseUnit,
     lg: 24 * baseUnit,
     xl: 32 * baseUnit,
-  }
+  };
 
-  return sizes[size]
-}
+  return sizes[size];
+};
 
 // enforce a max width for a column
 const columnSizeProps = (size: ColumnSize) => {
-  const columnSizePx = columnSize(size)
+  const columnSizePx = columnSize(size);
 
   return {
     minSize: columnSizePx,
@@ -44,10 +44,10 @@ const columnSizeProps = (size: ColumnSize) => {
         maxWidth: columnSizePx,
       },
     },
-  }
-}
+  };
+};
 
-const countryNames = new Intl.DisplayNames(['en'], { type: 'region' })
+const countryNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
 const getCountriesFromCoins = (coins: Coin[]): string[] => {
   return coins
@@ -55,17 +55,17 @@ const getCountriesFromCoins = (coins: Coin[]): string[] => {
     .filter((value, index, self) => self.indexOf(value) === index) // remove duplicates
     .sort(
       (countryA, countryB) => (countryA ?? '').localeCompare(countryB ?? '') // order alphabetically
-    ) as unknown as string[]
-}
+    ) as unknown as string[];
+};
 
 export const CoinTable = (): JSX.Element => {
-  const [showError, setShowError] = useState<boolean>(false)
-  const { prevAuthRequired, authRequired } = useAuthContext()
+  const [showError, setShowError] = useState<boolean>(false);
+  const { prevAuthRequired, authRequired } = useAuthContext();
 
   const totalRowsInView = isBrowser
     ? Math.ceil(window.innerHeight / tableConfig.rowHeight)
-    : 0
-  const shouldFetch = totalRowsInView > 0 && authRequired === false
+    : 0;
+  const shouldFetch = totalRowsInView > 0 && authRequired === false;
 
   const {
     data: coins,
@@ -77,30 +77,30 @@ export const CoinTable = (): JSX.Element => {
     shouldFetch,
     onError: (err: FetchErrorObject) => {
       if (!err?.data) {
-        console.error(err)
-        setShowError(true)
-        return
+        console.error(err);
+        setShowError(true);
+        return;
       }
     },
-  })
+  });
 
   useEffect(() => {
-    if (!isBrowser) return
+    if (!isBrowser) return;
     if (prevAuthRequired && authRequired === false) {
-      revalidateCoins()
-      console.warn('Authorized successfully. Revalidating coin data.')
+      revalidateCoins();
+      console.warn('Authorized successfully. Revalidating coin data.');
     }
-  }, [authRequired, prevAuthRequired, revalidateCoins])
+  }, [authRequired, prevAuthRequired, revalidateCoins]);
 
-  const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired
-  const showTableBody: boolean = showLoading || !!coins?.length || !!error
+  const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired;
+  const showTableBody: boolean = showLoading || !!coins?.length || !!error;
 
   const mintages = (coins ?? []).map(c => c.mintage ?? 0);
   const minMintage = Math.min(...mintages);
   const maxMintage = Math.max(...mintages);
 
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
-    const numberFormatter = new Intl.NumberFormat('nl-NL')
+    const numberFormatter = new Intl.NumberFormat('nl-NL');
 
     if (typeof authRequired == 'undefined' || authRequired) return [];
 
@@ -113,9 +113,9 @@ export const CoinTable = (): JSX.Element => {
         header: 'Image',
         ...columnSizeProps('xs'),
         Cell: ({ cell, row }) => {
-          const src = (cell as any).getValue()
+          const src = (cell as any).getValue();
           const alt = `${row.original.countryCode} ${row.original.year} ${row.original?.mintmark ?? ''
-            } ${row.original.denomination}`
+            } ${row.original.denomination}`;
 
           return (
             <Box
@@ -132,7 +132,7 @@ export const CoinTable = (): JSX.Element => {
                 borderRadius="100%"
               />
             </Box>
-          )
+          );
         },
       },
       {
@@ -145,7 +145,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => `${countryNames.of(row.countryCode)}`,
         Cell: ({ cell, row }) => {
-          const countryName = (cell as any).getValue()
+          const countryName = (cell as any).getValue();
 
           return (
             <Box
@@ -165,7 +165,7 @@ export const CoinTable = (): JSX.Element => {
               />
               {countryName}
             </Box>
-          )
+          );
         },
       },
       {
@@ -177,18 +177,18 @@ export const CoinTable = (): JSX.Element => {
         _filterFn: 'arrIncludesSome',
         ...columnSizeProps('sm'),
         accessorFn: (row: Coin) => {
-          if (row.currency == 'Exonumia') return row.currency
-          if (row.currency == 'NLG') return `${row.currency} (ƒ)`
-          if (row.currency == 'UAH') return `${row.currency} (₴)`
+          if (row.currency == 'Exonumia') return row.currency;
+          if (row.currency == 'NLG') return `${row.currency} (ƒ)`;
+          if (row.currency == 'UAH') return `${row.currency} (₴)`;
 
           const sign = new Intl.NumberFormat('nl-NL', {
             style: 'currency',
             currency: row.currency,
           })
             .format(0)
-            .substring(0, 1)
+            .substring(0, 1);
 
-          return `${row.currency} (${sign})`
+          return `${row.currency} (${sign})`;
         },
       },
       {
@@ -213,7 +213,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => {
           if (row.currency == 'Exonumia') {
-            return ''
+            return '';
           }
 
           const currencySuffix: Record<
@@ -224,11 +224,11 @@ export const CoinTable = (): JSX.Element => {
             GBP: ['pence', 'pound'],
             NLG: ['cent', 'gulden'],
             UAH: ['kopiyok', 'hryvnia'],
-          }
+          };
 
-          const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination
+          const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination;
 
-          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]}`
+          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]}`;
         },
       },
       {
@@ -247,8 +247,8 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => row.mintage ?? 0,
         Cell: ({ cell }) => {
-          const mintage = (cell as any).getValue()
-          const showStar = mintage <= tableConfig.rareMintageThreshold
+          const mintage = (cell as any).getValue();
+          const showStar = mintage <= tableConfig.rareMintageThreshold;
 
           return (
             <Box
@@ -269,7 +269,7 @@ export const CoinTable = (): JSX.Element => {
                 />
               )}
             </Box>
-          )
+          );
         },
       },
       {
@@ -323,9 +323,9 @@ export const CoinTable = (): JSX.Element => {
         _filterFn: 'arrIncludesSome',
         ...columnSizeProps('lg'),
       },
-    ]
+    ];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coins])
+  }, [coins]);
 
   return (
     <>
@@ -392,5 +392,5 @@ export const CoinTable = (): JSX.Element => {
         </Alert>
       </Snackbar>
     </>
-  )
-}
+  );
+};

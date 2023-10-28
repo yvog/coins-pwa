@@ -1,5 +1,5 @@
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 
 export const Logo = () => {
   return (
@@ -23,5 +23,5 @@ export const Logo = () => {
         Coins
       </Typography>
     </Link>
-  )
-}
+  );
+};

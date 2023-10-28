@@ -9,27 +9,27 @@ export const coinQualities = [
   'VG',
   'G',
   'P',
-] as const
+] as const;
 
-export const coinMintmarks = ['A', 'D', 'G', 'J', 'F', 'S'] as const
+export const coinMintmarks = ['A', 'D', 'G', 'J', 'F', 'S'] as const;
 
-export const exonumiaTypes = ['Token'] as const
+export const exonumiaTypes = ['Token'] as const;
 
 export type Coin = {
-  image: `https://en.numista.com/catalogue/photos/${string}`
-  countryCode: EurozoneCountryCodes
-  year: number
-  mintmark?: CoinMintmarks
-  denomination: number
-  currency: 'EUR' | 'GBP' | 'NLG' | 'UAH' | 'Exonumia'
-  mintage?: number
-  cc?: boolean
-  description?: string
-  quality: CoinQualities
-  nifc?: boolean
-  swap?: boolean
-  exonumiaType?: ExonumiaTypes
-}
+  image: `https://en.numista.com/catalogue/photos/${string}`;
+  countryCode: EurozoneCountryCodes;
+  year: number;
+  mintmark?: CoinMintmarks;
+  denomination: number;
+  currency: 'EUR' | 'GBP' | 'NLG' | 'UAH' | 'Exonumia';
+  mintage?: number;
+  cc?: boolean;
+  description?: string;
+  quality: CoinQualities;
+  nifc?: boolean;
+  swap?: boolean;
+  exonumiaType?: ExonumiaTypes;
+};
 
 type EurozoneCountryCodes =
   | 'AD'
@@ -55,10 +55,10 @@ type EurozoneCountryCodes =
   | 'SK'
   | 'SI'
   | 'ES'
-  | 'VA'
+  | 'VA';
 
-type CoinQualities = (typeof coinQualities)[number]
+type CoinQualities = (typeof coinQualities)[number];
 
-type CoinMintmarks = (typeof coinMintmarks)[number]
+type CoinMintmarks = (typeof coinMintmarks)[number];
 
-type ExonumiaTypes = (typeof exonumiaTypes)[number]
+type ExonumiaTypes = (typeof exonumiaTypes)[number];

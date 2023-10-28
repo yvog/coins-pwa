@@ -1,13 +1,13 @@
-import { createEmotionCache, theme } from '@/components'
-import { AuthProvider, ConnectivityProvider } from '@/contexts'
-import { CacheProvider, EmotionCache } from '@emotion/react'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
-import type { AppProps } from 'next/app'
-import Head from 'next/head'
+import { createEmotionCache, theme } from '@/components';
+import { AuthProvider, ConnectivityProvider } from '@/contexts';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
 // Client-side cache, shared for the whole session of the user in the browser.
-const clientSideEmotionCache = createEmotionCache()
+const clientSideEmotionCache = createEmotionCache();
 
 type CoinsAppProps = AppProps & {
   emotionCache?: EmotionCache
@@ -36,5 +36,5 @@ export default function App({
         </ThemeProvider>
       </AuthProvider>
     </CacheProvider>
-  )
+  );
 }

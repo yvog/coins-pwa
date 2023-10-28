@@ -1,11 +1,11 @@
-import { lighten, SxProps, Theme } from '@mui/material/styles'
-import { MaterialReactTableProps } from 'material-react-table'
-import { tableConfig } from './tableConfig'
-import { Coin } from './types'
+import { lighten, SxProps, Theme } from '@mui/material/styles';
+import { MaterialReactTableProps } from 'material-react-table';
+import { tableConfig } from './tableConfig';
+import { Coin } from './types';
 
 type TableStylingPropsState = {
-  showTableBody?: boolean
-}
+  showTableBody?: boolean;
+};
 
 type TableStylingProps = Pick<
   MaterialReactTableProps<Coin>,
@@ -21,7 +21,7 @@ type TableStylingProps = Pick<
   | 'muiTableBodyRowProps'
   | 'muiTableContainerProps'
   | 'muiTablePaperProps'
->
+>;
 
 export const defaultMuiTableHeadCellSxProps: SxProps<Theme> = {
   borderBottomColor: 'divider',
@@ -40,7 +40,7 @@ export const defaultMuiTableHeadCellSxProps: SxProps<Theme> = {
       },
     },
   },
-}
+};
 
 export const tableStylingProps = ({
   showTableBody,
@@ -152,4 +152,4 @@ export const tableStylingProps = ({
       outline: 'none',
     },
   },
-})
+});

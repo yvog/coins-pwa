@@ -3,6 +3,13 @@
   "plugins": ["mui-path-imports"],
   "rules": {
     "react/jsx-curly-brace-presence": "error",
-    "mui-path-imports/mui-path-imports": "warn"
+    "mui-path-imports/mui-path-imports": "warn",
+    "semi": [
+      "error",
+      "always",
+      {
+        "omitLastInOneLineBlock": true
+      }
+    ]
   }
 }

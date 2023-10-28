@@ -1,5 +1,5 @@
-import Box from '@mui/material/Box'
-import Container from '@mui/material/Container'
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 type SectionProps = {
   children: React.ReactNode
@@ -32,5 +32,5 @@ export const Section = ({
     >
       <Container>{children}</Container>
     </Box>
-  )
-}
+  );
+};

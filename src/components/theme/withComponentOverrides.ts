@@ -1,4 +1,4 @@
-import { alpha, createTheme, Theme, ThemeOptions } from '@mui/material/styles'
+import { alpha, createTheme, Theme, ThemeOptions } from '@mui/material/styles';
 
 export const typographyStyleOverrides =
   (theme: Theme, spacing: number, overrides?: any) =>
@@ -7,18 +7,18 @@ export const typographyStyleOverrides =
       marginBottom: theme.spacing(spacing),
     }),
     ...(overrides ?? {}),
-  })
+  });
 
-export const maxContainerWidth = 1920
+export const maxContainerWidth = 1920;
 
 export const containerPadding = {
   xs: 3,
   sm: 9,
   xl: 16,
-}
+};
 
 export const withComponentOverrides = (theme: Theme): Theme => {
-  const alphaBgColor = alpha(theme.palette.text.primary, 0.1)
+  const alphaBgColor = alpha(theme.palette.text.primary, 0.1);
 
   return createTheme({
     ...theme,
@@ -281,5 +281,5 @@ export const withComponentOverrides = (theme: Theme): Theme => {
         },
       },
     },
-  } as ThemeOptions)
-}
+  } as ThemeOptions);
+};

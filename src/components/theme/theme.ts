@@ -1,6 +1,6 @@
-import { createTheme, ThemeOptions } from '@mui/material/styles'
-import { withComponentOverrides } from './withComponentOverrides'
-import { withTypography } from './withTypography'
+import { createTheme, ThemeOptions } from '@mui/material/styles';
+import { withComponentOverrides } from './withComponentOverrides';
+import { withTypography } from './withTypography';
 
 export const theme = withComponentOverrides(
   withTypography(
@@ -48,4 +48,4 @@ export const theme = withComponentOverrides(
       spacing: 8,
     } as ThemeOptions)
   )
-)
+);
