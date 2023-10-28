@@ -7,7 +7,7 @@ import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import { Breakpoint, Theme } from '@mui/material/styles'
-import { MRT_ColumnDef, MaterialReactTable } from 'material-react-table'
+import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table'
 import Head from 'next/head'
 import { useEffect, useMemo, useState } from 'react'
 import { AppImage } from '../app-image/AppImage'
@@ -95,11 +95,16 @@ export const CoinTable = (): JSX.Element => {
   const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired
   const showTableBody: boolean = showLoading || !!coins?.length || !!error
 
+  const mintages = (coins ?? []).map(c => c.mintage ?? 0);
+  const minMintage = Math.min(...mintages);
+  const maxMintage = Math.max(...mintages);
+
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
     const numberFormatter = new Intl.NumberFormat('nl-NL')
 
     if (typeof authRequired == 'undefined' || authRequired) return [];
 
+    // any columns "_filterFn" property fixes "undefined" in the table head cell filter label
     return [
       {
         accessorKey: 'image',
@@ -133,9 +138,11 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'countryCode',
         header: 'Country',
-        ...columnSizeProps('md'),
         filterVariant: 'multi-select',
         filterSelectOptions: getCountriesFromCoins(coins ?? []),
+        filterFn: 'arrIncludesSome',
+        _filterFn: 'arrIncludesSome',
+        ...columnSizeProps('md'),
         accessorFn: (row: Coin) => `${countryNames.of(row.countryCode)}`,
         Cell: ({ cell, row }) => {
           const countryName = (cell as any).getValue()
@@ -149,15 +156,13 @@ export const CoinTable = (): JSX.Element => {
               }}
             >
               <AppImage
-                src={`${tableConfig.flagIconCssBaseURL
-                  }/${row.original.countryCode.toLowerCase()}.svg`}
+                src={`${tableConfig.flagIconCssBaseURL}/${row.original.countryCode.toLowerCase()}.svg`}
                 width={24}
                 height={18}
                 aria-hidden="true"
                 alt={countryName}
                 borderRadius={1}
               />
-
               {countryName}
             </Box>
           )
@@ -166,9 +171,11 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'currency',
         header: 'Currency',
-        ...columnSizeProps('sm'),
         filterVariant: 'multi-select',
         filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'UAH (₴)', 'Exonumia'],
+        filterFn: 'arrIncludesSome',
+        _filterFn: 'arrIncludesSome',
+        ...columnSizeProps('sm'),
         accessorFn: (row: Coin) => {
           if (row.currency == 'Exonumia') return row.currency
           if (row.currency == 'NLG') return `${row.currency} (ƒ)`
@@ -187,18 +194,22 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'year',
         header: 'Year',
+        _filterFn: 'fuzzy',
         ...columnSizeProps('xs'),
       },
       {
         accessorKey: 'mintmark',
         header: 'Mintmark',
-        ...columnSizeProps('sm'),
         filterVariant: 'multi-select',
         filterSelectOptions: [...coinMintmarks],
+        filterFn: 'arrIncludesSome',
+        _filterFn: 'arrIncludesSome',
+        ...columnSizeProps('sm'),
       },
       {
         accessorKey: 'denomination',
         header: 'Denomination',
+        _filterFn: 'fuzzy',
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => {
           if (row.currency == 'Exonumia') {
@@ -215,19 +226,26 @@ export const CoinTable = (): JSX.Element => {
             UAH: ['kopiyok', 'hryvnia'],
           }
 
-          const amount =
-            row.denomination < 1 ? row.denomination * 100 : row.denomination
+          const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination
 
-          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]
-            }`
+          return `${amount} ${currencySuffix[row.currency][clamp(Math.floor(row.denomination), 0, 1)]}`
         },
       },
       {
         accessorKey: 'mintage',
         header: 'Mintage',
-        accessorFn: (row: Coin) => `${row.mintage ?? 'unknown'}`,
+        filterVariant: 'range-slider',
+        filterFn: 'betweenInclusive',
+        _filterFn: 'betweenInclusive',
+        muiTableHeadCellFilterSliderProps: {
+          marks: true,
+          min: minMintage,
+          max: maxMintage,
+          step: 1000000,
+          valueLabelFormat: (value: number) => numberFormatter.format(value)
+        },
         ...columnSizeProps('md'),
-        filterFn: 'startsWith',
+        accessorFn: (row: Coin) => row.mintage ?? 0,
         Cell: ({ cell }) => {
           const mintage = (cell as any).getValue()
           const showStar = mintage <= tableConfig.rareMintageThreshold
@@ -240,7 +258,7 @@ export const CoinTable = (): JSX.Element => {
                 gap: 1,
               }}
             >
-              {(mintage === 'unknown' && mintage) || numberFormatter.format(mintage)}
+              {numberFormatter.format(mintage)}
               {showStar && (
                 <Star
                   sx={(theme: Theme) => ({
@@ -257,36 +275,42 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'cc',
         header: 'Commemorative',
-        ...columnSizeProps('lg'),
-        filterVariant: 'multi-select',
+        filterVariant: 'select',
         filterSelectOptions: ['Yes', 'No'],
+        _filterFn: 'equals',
+        ...columnSizeProps('lg'),
         accessorFn: (row: Coin) => `${row.cc ? 'Yes' : 'No'}`,
       },
       {
         accessorKey: 'description',
         header: 'Description',
+        _filterFn: 'fuzzy',
         ...columnSizeProps('xl'),
       },
       {
         accessorKey: 'quality',
         header: 'Quality',
-        ...columnSizeProps('xs'),
         filterVariant: 'multi-select',
         filterSelectOptions: [...coinQualities],
+        filterFn: 'arrIncludesSome',
+        _filterFn: 'arrIncludesSome',
+        ...columnSizeProps('xs'),
       },
       {
         accessorKey: 'nifc',
         header: 'NIFC',
-        ...columnSizeProps('xs'),
-        filterVariant: 'multi-select',
+        filterVariant: 'select',
         filterSelectOptions: ['Yes', 'No'],
+        _filterFn: 'equals',
+        ...columnSizeProps('xs'),
         accessorFn: (row: Coin) => `${row.nifc ? 'Yes' : 'No'}`,
       },
       {
         accessorKey: 'swap',
         header: 'Swappable',
-        filterVariant: 'multi-select',
+        filterVariant: 'select',
         filterSelectOptions: ['Yes', 'No'],
+        _filterFn: 'equals',
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => `${row.swap ? 'Yes' : 'No'}`,
       },
@@ -295,6 +319,8 @@ export const CoinTable = (): JSX.Element => {
         header: 'Exonumia Type',
         filterVariant: 'multi-select',
         filterSelectOptions: [...exonumiaTypes],
+        filterFn: 'arrIncludesSome',
+        _filterFn: 'arrIncludesSome',
         ...columnSizeProps('lg'),
       },
     ]
@@ -319,7 +345,7 @@ export const CoinTable = (): JSX.Element => {
       </Head>
 
       <MaterialReactTable
-        // breaks certain features (like column- density, hiding): https://www.material-react-table.com/docs/guides/memoize-components#memoizing-table-rows
+        // breaks certain features: https://www.material-react-table.com/docs/guides/memoize-components#memoizing-table-rows
         memoMode="rows"
         enableDensityToggle={false} // feature does not work with memoMode="rows"
         enableHiding={false} // feature does not work with memoMode="rows"
