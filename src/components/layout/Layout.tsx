@@ -12,7 +12,7 @@ export const Layout = ({ header, children }: Layout): JSX.Element => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        height: '100%'
       }}
     >
       <ConnectivityBar />

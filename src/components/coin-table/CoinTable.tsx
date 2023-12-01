@@ -100,9 +100,19 @@ export const CoinTable = (): JSX.Element => {
   const maxMintage = Math.max(...mintages);
 
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
+    if (typeof authRequired == 'undefined' || authRequired) return [];
+
     const numberFormatter = new Intl.NumberFormat('nl-NL');
 
-    if (typeof authRequired == 'undefined' || authRequired) return [];
+    const currencySuffix: Record<
+      Exclude<Coin['currency'], 'Exonumia'>,
+      [string, string]
+    > = {
+      EUR: ['cent', 'euro'],
+      GBP: ['pence', 'pound'],
+      NLG: ['cent', 'gulden'],
+      UAH: ['kopiyok', 'hryvnia'],
+    };
 
     // any columns "_filterFn" property fixes "undefined" in the table head cell filter label
     return [
@@ -136,7 +146,7 @@ export const CoinTable = (): JSX.Element => {
         },
       },
       {
-        accessorKey: 'countryCode',
+        id: 'countryCode',
         header: 'Country',
         filterVariant: 'multi-select',
         filterSelectOptions: getCountriesFromCoins(coins ?? []),
@@ -169,7 +179,7 @@ export const CoinTable = (): JSX.Element => {
         },
       },
       {
-        accessorKey: 'currency',
+        id: 'currency',
         header: 'Currency',
         filterVariant: 'multi-select',
         filterSelectOptions: ['EUR (€)', 'GBP (£)', 'NLG (ƒ)', 'UAH (₴)', 'Exonumia'],
@@ -184,8 +194,7 @@ export const CoinTable = (): JSX.Element => {
           const sign = new Intl.NumberFormat('nl-NL', {
             style: 'currency',
             currency: row.currency,
-          })
-            .format(0)
+          }).format(0)
             .substring(0, 1);
 
           return `${row.currency} (${sign})`;
@@ -194,6 +203,7 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'year',
         header: 'Year',
+        filterFn: 'fuzzy',
         _filterFn: 'fuzzy',
         ...columnSizeProps('xs'),
       },
@@ -207,24 +217,12 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('sm'),
       },
       {
-        accessorKey: 'denomination',
+        id: 'denomination',
         header: 'Denomination',
         _filterFn: 'fuzzy',
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => {
-          if (row.currency == 'Exonumia') {
-            return '';
-          }
-
-          const currencySuffix: Record<
-            Exclude<Coin['currency'], 'Exonumia'>,
-            [string, string]
-          > = {
-            EUR: ['cent', 'euro'],
-            GBP: ['pence', 'pound'],
-            NLG: ['cent', 'gulden'],
-            UAH: ['kopiyok', 'hryvnia'],
-          };
+          if (row.currency == 'Exonumia') return '';
 
           const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination;
 
@@ -232,7 +230,7 @@ export const CoinTable = (): JSX.Element => {
         },
       },
       {
-        accessorKey: 'mintage',
+        id: 'mintage',
         header: 'Mintage',
         filterVariant: 'range-slider',
         filterFn: 'betweenInclusive',
@@ -284,6 +282,7 @@ export const CoinTable = (): JSX.Element => {
       {
         accessorKey: 'description',
         header: 'Description',
+        filterFn: 'fuzzy',
         _filterFn: 'fuzzy',
         ...columnSizeProps('xl'),
       },
@@ -297,7 +296,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('xs'),
       },
       {
-        accessorKey: 'nifc',
+        id: 'nifc',
         header: 'NIFC',
         filterVariant: 'select',
         filterSelectOptions: ['Yes', 'No'],
@@ -306,7 +305,7 @@ export const CoinTable = (): JSX.Element => {
         accessorFn: (row: Coin) => `${row.nifc ? 'Yes' : 'No'}`,
       },
       {
-        accessorKey: 'swap',
+        id: 'swap',
         header: 'Swappable',
         filterVariant: 'select',
         filterSelectOptions: ['Yes', 'No'],
@@ -324,6 +323,7 @@ export const CoinTable = (): JSX.Element => {
         ...columnSizeProps('lg'),
       },
     ];
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coins]);
 
@@ -346,7 +346,7 @@ export const CoinTable = (): JSX.Element => {
 
       <MaterialReactTable
         // breaks certain features: https://www.material-react-table.com/docs/guides/memoize-components#memoizing-table-rows
-        memoMode="rows"
+        memoMode='rows'
         enableDensityToggle={false} // feature does not work with memoMode="rows"
         enableHiding={false} // feature does not work with memoMode="rows"
         enablePagination={false}

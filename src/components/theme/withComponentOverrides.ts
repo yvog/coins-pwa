@@ -2,12 +2,12 @@ import { alpha, createTheme, Theme, ThemeOptions } from '@mui/material/styles';
 
 export const typographyStyleOverrides =
   (theme: Theme, spacing: number, overrides?: any) =>
-  ({ ownerState }: any) => ({
-    ...(ownerState.gutterBottom && {
-      marginBottom: theme.spacing(spacing),
-    }),
-    ...(overrides ?? {}),
-  });
+    ({ ownerState }: any) => ({
+      ...(ownerState.gutterBottom && {
+        marginBottom: theme.spacing(spacing),
+      }),
+      ...(overrides ?? {}),
+    });
 
 export const maxContainerWidth = 1920;
 
@@ -100,9 +100,9 @@ export const withComponentOverrides = (theme: Theme): Theme => {
             },
 
             '&:hover, &:has(.MuiSelect-select[aria-expanded="true"]), &:focus, &:focus-within':
-              {
-                background: alpha('#E0E8F5', 0.1),
-              },
+            {
+              background: alpha('#E0E8F5', 0.1),
+            },
           },
         },
       },

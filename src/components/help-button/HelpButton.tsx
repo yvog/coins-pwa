@@ -79,8 +79,7 @@ export const HelpButton = () => {
           <Box id="help-modal-description">
             <Typography gutterBottom={false}>
               This app shows my euro (€) coin collection. I collect circulated
-              commemorative €2 and regular coins. No year runs specifically, just all
-              denominations per country. There are also some world coins in my
+              commemorative €2 and rare regular coins. There are also some world coins in my
               collection, although I do not actively collect them.
             </Typography>
 
