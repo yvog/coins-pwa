@@ -15,7 +15,7 @@ import { tableConfig } from './tableConfig';
 import { defaultMuiTableHeadCellSxProps, tableStylingProps } from './tableStylingProps';
 import { Coin, coinMintmarks, coinQualities, exonumiaTypes } from './types';
 
-type ColumnSize = Breakpoint
+type ColumnSize = Breakpoint;
 
 const columnSize = (size: ColumnSize): number => {
   const baseUnit = 8;
@@ -78,6 +78,7 @@ export const CoinTable = (): JSX.Element => {
     error,
     mutate: revalidateCoins,
   } = useCoins({
+    shouldFetch: !authRequired,
     onError: (err: FetchErrorObject) => {
       if (!err?.data) {
         console.error(err);

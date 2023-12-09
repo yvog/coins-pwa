@@ -10,7 +10,7 @@ type AuthDrawerProps = Omit<DrawerProps, 'PaperProps' | 'onClose' | 'open'>
 
 export const AuthDrawer = (props: AuthDrawerProps) => {
   const [opened, setOpened] = useState<boolean>();
-  const { authRequired, revalidateAuth } = useAuthContext();
+  const { authRequired } = useAuthContext();
 
   return (
     <Drawer
