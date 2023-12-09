@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
 import { ConnectivityBar } from '../connectivity-bar/ConnectivityBar';
 
-type Layout = {
+type LayoutProps = {
   header: React.ReactNode
   children: React.ReactNode
 }
 
-export const Layout = ({ header, children }: Layout): JSX.Element => {
+export const Layout = ({ header, children }: LayoutProps): JSX.Element => {
   return (
     <Box
       sx={{

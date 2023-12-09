@@ -3,9 +3,10 @@ import { useLogout } from '@/hooks';
 import { isBrowser } from '@/util';
 import Logout from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
+import { ErrorSnackbar } from '../error-snackbar/ErrorSnackbar';
 
 export const LogoutButton = () => {
-  const { trigger } = useLogout({
+  const { trigger, error } = useLogout({
     onSuccess: () => {
       // delete cache of (possibly) protected API routes
       caches.delete('cross-origin').finally(() => {
@@ -21,8 +22,12 @@ export const LogoutButton = () => {
   }
 
   return (
-    <IconButton aria-label="logout" onClick={() => trigger(undefined)}>
-      <Logout />
-    </IconButton>
+    <>
+      <IconButton aria-label="logout" onClick={() => trigger(undefined)}>
+        <Logout />
+      </IconButton>
+
+      <ErrorSnackbar show={!!error} message='Could not log out' />
+    </>
   );
 };

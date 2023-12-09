@@ -3,14 +3,14 @@ import { useCoins } from '@/hooks';
 import { FetchErrorObject } from '@/lib/fetcher';
 import { clamp, isBrowser } from '@/util';
 import Star from '@mui/icons-material/Star';
-import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import Snackbar from '@mui/material/Snackbar';
 import { Breakpoint, Theme } from '@mui/material/styles';
+import { PaginationTableState } from '@tanstack/react-table';
 import { MaterialReactTable, type MRT_ColumnDef } from 'material-react-table';
 import Head from 'next/head';
 import { useEffect, useMemo, useState } from 'react';
 import { AppImage } from '../app-image/AppImage';
+import { ErrorSnackbar } from '../error-snackbar/ErrorSnackbar';
 import { tableConfig } from './tableConfig';
 import { defaultMuiTableHeadCellSxProps, tableStylingProps } from './tableStylingProps';
 import { Coin, coinMintmarks, coinQualities, exonumiaTypes } from './types';
@@ -62,10 +62,14 @@ export const CoinTable = (): JSX.Element => {
   const [showError, setShowError] = useState<boolean>(false);
   const { prevAuthRequired, authRequired } = useAuthContext();
 
-  const totalRowsInView = isBrowser
-    ? Math.ceil(window.innerHeight / tableConfig.rowHeight)
-    : 0;
-  const shouldFetch = totalRowsInView > 0 && authRequired === false;
+  const initialPaginationTableState: PaginationTableState = {
+    pagination: {
+      pageIndex: 0,
+      pageSize: 64,
+    }
+  };
+
+  const [paginationTableState, setPaginationTableState] = useState<PaginationTableState>(initialPaginationTableState);
 
   const {
     data: coins,
@@ -74,7 +78,6 @@ export const CoinTable = (): JSX.Element => {
     error,
     mutate: revalidateCoins,
   } = useCoins({
-    shouldFetch,
     onError: (err: FetchErrorObject) => {
       if (!err?.data) {
         console.error(err);
@@ -84,25 +87,43 @@ export const CoinTable = (): JSX.Element => {
     },
   });
 
+  // make sure the amount of initial rows fill the whole viewport
   useEffect(() => {
     if (!isBrowser) return;
+
+    const pageSize = Math.ceil(window.innerHeight / tableConfig.rowHeight);
+
+    if (pageSize > initialPaginationTableState.pagination.pageSize) {
+      setPaginationTableState({
+        pagination: {
+          pageIndex: 0,
+          pageSize: pageSize,
+        },
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (!isBrowser) return;
+
     if (prevAuthRequired && authRequired === false) {
       revalidateCoins();
       console.warn('Authorized successfully. Revalidating coin data.');
     }
+
   }, [authRequired, prevAuthRequired, revalidateCoins]);
 
   const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired;
   const showTableBody: boolean = showLoading || !!coins?.length || !!error;
 
-  const mintages = (coins ?? []).map(c => c.mintage ?? 0);
-  const minMintage = Math.min(...mintages);
-  const maxMintage = Math.max(...mintages);
-
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
-    if (typeof authRequired == 'undefined' || authRequired) return [];
-
     const numberFormatter = new Intl.NumberFormat('nl-NL');
+
+    const mintages = (coins ?? []).map(c => c.mintage ?? 0);
+    const minMintage = Math.min(...mintages);
+    const maxMintage = Math.max(...mintages);
 
     const currencySuffix: Record<
       Exclude<Coin['currency'], 'Exonumia'>,
@@ -114,7 +135,6 @@ export const CoinTable = (): JSX.Element => {
       UAH: ['kopiyok', 'hryvnia'],
     };
 
-    // any columns "_filterFn" property fixes "undefined" in the table head cell filter label
     return [
       {
         accessorKey: 'image',
@@ -149,11 +169,11 @@ export const CoinTable = (): JSX.Element => {
         id: 'countryCode',
         header: 'Country',
         filterVariant: 'multi-select',
-        filterSelectOptions: getCountriesFromCoins(coins ?? []),
+        filterSelectOptions: getCountriesFromCoins([]),
         filterFn: 'arrIncludesSome',
         _filterFn: 'arrIncludesSome',
         ...columnSizeProps('md'),
-        accessorFn: (row: Coin) => `${countryNames.of(row.countryCode)}`,
+        accessorFn: (row: Coin) => row?.countryCode === null ? null : `${countryNames.of(row?.countryCode ?? '')}`,
         Cell: ({ cell, row }) => {
           const countryName = (cell as any).getValue();
 
@@ -166,7 +186,7 @@ export const CoinTable = (): JSX.Element => {
               }}
             >
               <AppImage
-                src={`${tableConfig.flagIconCssBaseURL}/${row.original.countryCode.toLowerCase()}.svg`}
+                src={`${tableConfig.flagIconCssBaseURL}/${row.original.countryCode?.toLowerCase()}.svg`}
                 width={24}
                 height={18}
                 aria-hidden="true"
@@ -187,6 +207,8 @@ export const CoinTable = (): JSX.Element => {
         _filterFn: 'arrIncludesSome',
         ...columnSizeProps('sm'),
         accessorFn: (row: Coin) => {
+          if (!row?.currency) return null;
+
           if (row.currency == 'Exonumia') return row.currency;
           if (row.currency == 'NLG') return `${row.currency} (ƒ)`;
           if (row.currency == 'UAH') return `${row.currency} (₴)`;
@@ -222,7 +244,9 @@ export const CoinTable = (): JSX.Element => {
         _filterFn: 'fuzzy',
         ...columnSizeProps('md'),
         accessorFn: (row: Coin) => {
-          if (row.currency == 'Exonumia') return '';
+          if (!row?.currency) return null;
+
+          if (row.currency === 'Exonumia') return '';
 
           const amount = row.denomination < 1 ? row.denomination * 100 : row.denomination;
 
@@ -243,10 +267,10 @@ export const CoinTable = (): JSX.Element => {
           valueLabelFormat: (value: number) => numberFormatter.format(value)
         },
         ...columnSizeProps('md'),
-        accessorFn: (row: Coin) => row.mintage ?? 0,
+        accessorFn: (row: Coin) => row?.mintage === null ? null : row?.mintage || 0,
         Cell: ({ cell }) => {
           const mintage = (cell as any).getValue();
-          const showStar = mintage <= tableConfig.rareMintageThreshold;
+          const showStar = mintage > 0 && mintage <= tableConfig.rareMintageThreshold;
 
           return (
             <Box
@@ -277,7 +301,7 @@ export const CoinTable = (): JSX.Element => {
         filterSelectOptions: ['Yes', 'No'],
         _filterFn: 'equals',
         ...columnSizeProps('lg'),
-        accessorFn: (row: Coin) => `${row.cc ? 'Yes' : 'No'}`,
+        accessorFn: (row: Coin) => row?.cc === null ? null : `${row.cc ? 'Yes' : 'No'}`,
       },
       {
         accessorKey: 'description',
@@ -302,7 +326,7 @@ export const CoinTable = (): JSX.Element => {
         filterSelectOptions: ['Yes', 'No'],
         _filterFn: 'equals',
         ...columnSizeProps('xs'),
-        accessorFn: (row: Coin) => `${row.nifc ? 'Yes' : 'No'}`,
+        accessorFn: (row: Coin) => row?.nifc === null ? null : `${row.nifc ? 'Yes' : 'No'}`,
       },
       {
         id: 'swap',
@@ -311,7 +335,7 @@ export const CoinTable = (): JSX.Element => {
         filterSelectOptions: ['Yes', 'No'],
         _filterFn: 'equals',
         ...columnSizeProps('md'),
-        accessorFn: (row: Coin) => `${row.swap ? 'Yes' : 'No'}`,
+        accessorFn: (row: Coin) => row?.swap === null ? null : `${row.swap ? 'Yes' : 'No'}`,
       },
       {
         accessorKey: 'exonumiaType',
@@ -324,7 +348,6 @@ export const CoinTable = (): JSX.Element => {
       },
     ];
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coins]);
 
   return (
@@ -362,35 +385,18 @@ export const CoinTable = (): JSX.Element => {
             { id: 'denomination', desc: false },
             { id: 'year', desc: false },
           ],
+          ...initialPaginationTableState
         }}
         state={{
           isLoading: showLoading,
-          pagination: {
-            pageIndex: 0,
-            // make sure the loading rows reach the bottom of the view
-            pageSize: totalRowsInView,
-          },
+          ...paginationTableState,
         }}
         enableStickyHeader
         enableStickyFooter
         {...tableStylingProps({ showTableBody })}
       />
-      <Snackbar
-        anchorOrigin={{
-          horizontal: 'center',
-          vertical: 'bottom',
-        }}
-        open={showError}
-        onClose={() => setShowError(false)}
-      >
-        <Alert
-          onClose={() => setShowError(false)}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          Could not refresh coin data
-        </Alert>
-      </Snackbar>
+
+      <ErrorSnackbar show={showError} message='Could not fetch coin data' />
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { useAuthContext } from '@/contexts';
 import Box from '@mui/material/Box';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
-import { Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { Theme } from '@mui/material/styles';
 import { useState } from 'react';
 import { AuthForm } from '../auth-form/AuthForm';
 
@@ -26,7 +26,7 @@ export const AuthDrawer = (props: AuthDrawerProps) => {
           borderTopLeftRadius: theme.spacing(3),
           borderTopRightRadius: theme.spacing(3),
           boxSizing: 'border-box',
-          maxWidth: `calc(100%- (${theme.spacing(4)} * 2))`,
+          maxWidth: `calc(100% - (${theme.spacing(4)} * 2))`,
           margin: '0 auto',
           backgroundImage: 'unset',
 

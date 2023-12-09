@@ -10,9 +10,7 @@ type AuthProviderProps = {
 export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
   const { children } = props;
   const [authRequired, setAuthRequired] = useState<boolean | undefined>(undefined);
-  const [prevAuthRequired, setPrevAuthRequired] = useState<boolean | undefined>(
-    undefined
-  );
+  const [prevAuthRequired, setPrevAuthRequired] = useState<boolean | undefined>(undefined);
 
   const { mutate } = useAuth({
     onError: (err: FetchErrorObject) => {

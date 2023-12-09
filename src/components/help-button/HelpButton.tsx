@@ -22,7 +22,6 @@ const getTotalValue = (coins: Coin[]): number => {
 
 export const HelpButton = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const handleClose = () => setOpen(false);
   const { authRequired } = useAuthContext();
 
   const {
@@ -31,25 +30,23 @@ export const HelpButton = () => {
     isValidating,
     error,
   } = useCoins({
-    shouldFetch: !authRequired,
+    shouldFetch: !authRequired
   });
 
   const showLoading: boolean = isLoading || isValidating || !!error;
-
-  if (authRequired) {
-    return <></>;
-  }
-
   const totalValue = getTotalValue(coins ?? []);
+
+  if (authRequired) return <></>;
 
   return (
     <>
       <IconButton aria-label="help" onClick={() => setOpen(true)}>
         <QuestionMark />
       </IconButton>
+
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpen(false)}
         aria-labelledby="help-modal-title"
         aria-describedby="help-modal-description"
         disablePortal
@@ -78,9 +75,7 @@ export const HelpButton = () => {
           </Typography>
           <Box id="help-modal-description">
             <Typography gutterBottom={false}>
-              This app shows my euro (€) coin collection. I collect circulated
-              commemorative €2 and rare regular coins. There are also some world coins in my
-              collection, although I do not actively collect them.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             </Typography>
 
             <Divider sx={{ my: 3 }} />
@@ -113,7 +108,7 @@ export const HelpButton = () => {
             <Divider sx={{ my: 3 }} />
 
             <Typography variant="caption">
-              © 2023 by Yvo Geldhof, coin images from Numista. Mintages from the
+              © 2023 Coins. Coin images from Numista. Mintages from the
               /r/EuroCoins community Discord server spreadsheet.
             </Typography>
           </Box>
