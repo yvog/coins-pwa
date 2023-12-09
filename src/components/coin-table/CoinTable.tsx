@@ -170,7 +170,7 @@ export const CoinTable = (): JSX.Element => {
         id: 'countryCode',
         header: 'Country',
         filterVariant: 'multi-select',
-        filterSelectOptions: getCountriesFromCoins([]),
+        filterSelectOptions: getCountriesFromCoins(coins ?? []),
         filterFn: 'arrIncludesSome',
         _filterFn: 'arrIncludesSome',
         ...columnSizeProps('md'),
