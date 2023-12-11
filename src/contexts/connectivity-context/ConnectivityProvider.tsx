@@ -37,18 +37,16 @@ export const ConnectivityProvider = (props: ConnectivityProviderProps): JSX.Elem
         isReachable('https://yvogeldhof.nl').then((online) => {
           setAllowPing(true);
 
-          if (online !== isOnline) {
-            if (online) {
-              // fully online
-              setIsOnline(true);
-            } else {
-              // limited access
-              setIsOnline(false);
-            }
+          if (online) {
+            // fully online
+            setIsOnline(true);
+          } else {
+            // limited access
+            setIsOnline(false);
           }
         });
       } else {
-        if (isOnline) setIsOnline(false);
+        setIsOnline(false);
       }
     };
 
