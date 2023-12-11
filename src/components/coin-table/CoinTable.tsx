@@ -116,7 +116,7 @@ export const CoinTable = (): JSX.Element => {
 
   }, [authRequired, prevAuthRequired, revalidateCoins]);
 
-  const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired;
+  const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired || authRequired === undefined;
   const showTableBody: boolean = showLoading || !!coins?.length || !!error;
 
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
