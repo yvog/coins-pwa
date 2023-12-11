@@ -22,10 +22,6 @@ export default function App({
     <CacheProvider value={emotionCache}>
       <AuthProvider>
         <Head>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-          />
           <title>Coins DEMO</title>
         </Head>
         <ThemeProvider theme={theme}>

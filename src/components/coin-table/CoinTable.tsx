@@ -78,7 +78,7 @@ export const CoinTable = (): JSX.Element => {
     error,
     mutate: revalidateCoins,
   } = useCoins({
-    shouldFetch: !authRequired,
+    shouldFetch: authRequired === false,
     onError: (err: FetchErrorObject) => {
       if (!err?.data) {
         console.error(err);
@@ -377,6 +377,7 @@ export const CoinTable = (): JSX.Element => {
         enableBottomToolbar={false}
         enableFilterMatchHighlighting={false}
         positionGlobalFilter="left"
+        enableFilters={!!coins}
         columns={columns}
         data={coins ?? []}
         initialState={{

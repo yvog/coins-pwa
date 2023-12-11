@@ -17,12 +17,14 @@ export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
       setPrevAuthRequired(authRequired);
 
       if (!err?.data) {
-        setAuthRequired(false);
+        setAuthRequired(true);
+
         return;
       }
 
       if (err.data.status === 401) {
         setAuthRequired(true);
+
         return;
       }
 

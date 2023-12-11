@@ -198,9 +198,9 @@ export const withComponentOverrides = (theme: Theme): Theme => {
       MuiSvgIcon: {
         styleOverrides: {
           root: {
-            fontSize: '2.4rem',
-            width: '2.4rem',
-            height: '2.4rem',
+            fontSize: '2.6rem',
+            width: '2.6rem',
+            height: '2.6rem',
             color: theme.palette.text.primary,
           },
         },

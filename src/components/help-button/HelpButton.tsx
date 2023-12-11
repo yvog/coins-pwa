@@ -30,7 +30,7 @@ export const HelpButton = () => {
     isValidating,
     error,
   } = useCoins({
-    shouldFetch: !authRequired
+    shouldFetch: authRequired === false
   });
 
   const showLoading: boolean = isLoading || isValidating || !!error;
