@@ -14,21 +14,10 @@ export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
 
   const { mutate } = useAuth({
     onError: (err: FetchErrorObject) => {
+      const newAuthRequired = !err?.data || err.data.status === 401;
+
       setPrevAuthRequired(authRequired);
-
-      if (!err?.data) {
-        setAuthRequired(true);
-
-        return;
-      }
-
-      if (err.data.status === 401) {
-        setAuthRequired(true);
-
-        return;
-      }
-
-      setAuthRequired(false);
+      setAuthRequired(newAuthRequired);
     },
     onSuccess: () => {
       setPrevAuthRequired(authRequired);

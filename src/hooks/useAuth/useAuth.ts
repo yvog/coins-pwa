@@ -14,7 +14,6 @@ export function useAuth(options?: useAuthOptions) {
         credentials: 'include',
       }),
     {
-      revalidateOnReconnect: true,
       shouldRetryOnError: false,
       ...options,
     }

@@ -13,4 +13,3 @@ export { Logo } from './logo/Logo';
 export { LogoutButton } from './logout-button/LogoutButton';
 export { Section } from './section/Section';
 export { createEmotionCache, theme } from './theme';
-

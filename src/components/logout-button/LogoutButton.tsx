@@ -17,13 +17,11 @@ export const LogoutButton = () => {
   const { isOnline } = useConnectivityContext();
   const { authRequired } = useAuthContext();
 
-  if (authRequired || !isOnline) {
-    return <></>;
-  }
+  const disabled = authRequired !== false || !isOnline;
 
   return (
     <>
-      <IconButton aria-label="logout" onClick={() => trigger(undefined)}>
+      <IconButton aria-label="logout" disabled={disabled} onClick={() => trigger(undefined)}>
         <Logout />
       </IconButton>
 

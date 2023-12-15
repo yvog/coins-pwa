@@ -13,10 +13,8 @@ export function useCoins({ shouldFetch = true, ...restOptions }: useSWROptions) 
         credentials: 'include',
       }),
     {
-      refreshWhenOffline: false,
-      revalidateOnFocus: true,
+      revalidateOnFocus: false,
       shouldRetryOnError: false,
-      revalidateOnReconnect: true,
       ...restOptions,
     }
   );

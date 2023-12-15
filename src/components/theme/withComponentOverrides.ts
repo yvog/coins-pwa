@@ -192,6 +192,10 @@ export const withComponentOverrides = (theme: Theme): Theme => {
           root: {
             minWidth: '3.2rem',
             minHeight: '3.2rem',
+
+            '&.Mui-disabled': {
+              opacity: 0.4,
+            },
           },
         },
       },

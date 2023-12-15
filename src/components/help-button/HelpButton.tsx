@@ -35,16 +35,15 @@ export const HelpButton = () => {
 
   const showLoading: boolean = isLoading || isValidating || !!error;
   const totalValue = getTotalValue(coins ?? []);
-
-  if (authRequired) return <></>;
+  const disabled = authRequired !== false;
 
   return (
     <>
-      <IconButton aria-label="help" onClick={() => setOpen(true)}>
+      <IconButton aria-label="help" disabled={disabled} onClick={() => setOpen(true)}>
         <QuestionMark />
       </IconButton>
 
-      <Modal
+      {!disabled && <Modal
         open={open}
         onClose={() => setOpen(false)}
         aria-labelledby="help-modal-title"
@@ -113,7 +112,7 @@ export const HelpButton = () => {
             </Typography>
           </Box>
         </Box>
-      </Modal>
+      </Modal>}
     </>
   );
 };

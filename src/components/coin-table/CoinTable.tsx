@@ -83,7 +83,6 @@ export const CoinTable = (): JSX.Element => {
       if (!err?.data) {
         console.error(err);
         setShowError(true);
-        return;
       }
     },
   });
@@ -118,6 +117,7 @@ export const CoinTable = (): JSX.Element => {
 
   const showLoading: boolean = isLoading || isValidating || !!error || !!authRequired || authRequired === undefined;
   const showTableBody: boolean = showLoading || !!coins?.length || !!error;
+  const enableTableButtons = !!coins;
 
   const columns = useMemo<MRT_ColumnDef<Coin>[]>(() => {
     const numberFormatter = new Intl.NumberFormat('nl-NL');
@@ -377,7 +377,8 @@ export const CoinTable = (): JSX.Element => {
         enableBottomToolbar={false}
         enableFilterMatchHighlighting={false}
         positionGlobalFilter="left"
-        enableFilters={!!coins}
+        enableFilters={enableTableButtons}
+        enableFullScreenToggle={enableTableButtons}
         columns={columns}
         data={coins ?? []}
         initialState={{

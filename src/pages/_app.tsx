@@ -20,17 +20,18 @@ export default function App({
 }: CoinsAppProps) {
   return (
     <CacheProvider value={emotionCache}>
-      <AuthProvider>
-        <Head>
-          <title>Coins DEMO</title>
-        </Head>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
+      <Head>
+        <title>Coins DEMO</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover" />
+      </Head>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AuthProvider>
           <ConnectivityProvider>
             <Component {...pageProps} />
           </ConnectivityProvider>
-        </ThemeProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </CacheProvider>
   );
 }

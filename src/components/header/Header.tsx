@@ -13,7 +13,7 @@ export const Header = (): JSX.Element => {
         alignItems: 'center',
         justifyContent: 'space-between',
         p: 1,
-        // MRT uses the same technique to create its background color.. we'll adapt it here:
+        // MRT uses the same technique to create its background color.. we'll adopt it here:
         backgroundColor: lighten(theme.palette.background.default, 0.04),
       })}
     >
